@@ -1,8 +1,10 @@
 'use client'
-import React, { useState, FC, ReactElement } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Button, Divider, Input } from 'antd';
 import './App.css';
-import ParseProvider from "@/Providers/parse.provider";
+import Parse from 'parse';
+import { initializeParse } from  '@parse/react';
+import parseConfig from "@/config/parse";
 
 interface propTypes {}
 
@@ -10,39 +12,39 @@ const LoginPage: React.FC<propTypes> = () => {
     // State variables
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [currentUser, setCurrentUser] = useState(null);
-    const Parse = ParseProvider();
+    const [currentUser, setCurrentUser] = useState< Parse.User<Parse.Attributes> | undefined>(undefined);
+
+    useEffect(() => {
+        initializeParse(
+            parseConfig.serverUrl,
+            parseConfig.applicationId,
+            parseConfig.javascriptKey
+        );
+    }, []);
 
     const getCurrentUser = async function () {
         const currentUser = await Parse.User.current();
-        // Update state variable holding current user
         setCurrentUser(currentUser);
         return currentUser;
     };
 
     const doUserLogIn = async function () {
-        // Note that these values come from state variables that we've declared before
         const usernameValue = username;
         const passwordValue = password;
         try {
             const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
-            // logIn returns the corresponding ParseUser object
             alert(
                 `Success! User ${loggedInUser.get(
                     'username'
                 )} has successfully signed in!`
             );
-            // To verify that this is in fact the current user, `current` can be used
             const currentUser = await Parse.User.current();
             console.log(loggedInUser === currentUser);
-            // Clear input fields
             setUsername('');
             setPassword('');
-            // Update state variable holding current user
             getCurrentUser();
             return true;
         } catch (error) {
-            // Error can be caused by wrong parameters or lack of Internet connection
             alert(`Error! ${error}`);
             return false;
         }
