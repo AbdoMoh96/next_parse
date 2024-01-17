@@ -1,20 +1,13 @@
 'use client'
-import React,{ useEffect } from 'react';
+import React from 'react';
+import { Button } from "antd";
 import Parse from 'parse';
-import { useParseQuery, initializeParse } from  '@parse/react';
-import parseConfig from "@/config/parse";
+import { useParseQuery } from  '@parse/react';
+import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
 
 interface propTypes {}
 
 const TodosView: React.FC<propTypes> = () => {
-
-    useEffect(() => {
-        initializeParse(
-            parseConfig.serverLiveUrl,
-            parseConfig.applicationId,
-            parseConfig.javascriptKey
-        );
-    }, []);
 
     const parseQuery = new Parse.Query('ToDo');
     const {
@@ -28,7 +21,9 @@ const TodosView: React.FC<propTypes> = () => {
     } = useParseQuery(parseQuery);
 
     return (
-        <div>
+        <ParseProvider live={true}>
+        <div className="container">
+        <div className="form_container">
             {isLoading && (
                 <p>Loading...</p>
             )}
@@ -51,12 +46,16 @@ const TodosView: React.FC<propTypes> = () => {
             {error && (
                 <p>{error.message}</p>
             )}
-            <button
+            <Button
                 onClick={reload}
+                style={{ marginTop: 16 }}
+                type="primary"
             >
                 Reload
-            </button>
+            </Button>
         </div>
+        </div>
+        </ParseProvider>
     );
 }
 

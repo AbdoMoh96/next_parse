@@ -5,13 +5,14 @@ import parseConfig from "@/config/parse";
 
 interface propTypes {
     children: React.ReactNode;
+    live?: boolean;
 }
 
-const ParseProvider: React.FC<propTypes> = ({children}) => {
+const ParseProvider: React.FC<propTypes> = ({children, live}) => {
 
     useEffect(() => {
         initializeParse(
-            parseConfig.serverUrl,
+            live ? parseConfig.serverLiveUrl : parseConfig.serverUrl,
             parseConfig.applicationId,
             parseConfig.javascriptKey
         );
