@@ -1,26 +1,16 @@
 'use client'
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Button, Divider, Input } from 'antd';
-import './App.css';
+import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
 import Parse from 'parse';
-import { initializeParse } from  '@parse/react';
-import parseConfig from "@/config/parse";
 
 interface propTypes {}
 
 const LoginPage: React.FC<propTypes> = () => {
-    // State variables
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [currentUser, setCurrentUser] = useState< Parse.User<Parse.Attributes> | undefined>(undefined);
 
-    useEffect(() => {
-        initializeParse(
-            parseConfig.serverUrl,
-            parseConfig.applicationId,
-            parseConfig.javascriptKey
-        );
-    }, []);
 
     const getCurrentUser = async function () {
         const currentUser = await Parse.User.current();
@@ -51,20 +41,11 @@ const LoginPage: React.FC<propTypes> = () => {
     };
 
     return (
-        <div>
-            <div className="header">
-                <img
-                    className="header_logo"
-                    alt="Back4App Logo"
-                    src={
-                        'https://blog.back4app.com/wp-content/uploads/2019/05/back4app-white-logo-500px.png'
-                    }
-                />
-                <p className="header_text_bold">{'React on Back4App'}</p>
-                <p className="header_text">{'User Registration'}</p>
-            </div>
-            <div className='container'>
-                <h2 className="heading">{'User Registration'}</h2>
+        <ParseProvider>
+        <div className="container">
+
+            <div className='form_container'>
+                <h2 className="heading">{'User Login'}</h2>
                 <Divider />
                 <div className="form_wrapper">
                     <Input
@@ -87,6 +68,9 @@ const LoginPage: React.FC<propTypes> = () => {
                     <Button
                         onClick={() => doUserLogIn()}
                         type="primary"
+                        style={{
+                            width: "100%"
+                        }}
                         className="form_button"
                         color={'#208AEC'}
                         size="large"
@@ -96,6 +80,7 @@ const LoginPage: React.FC<propTypes> = () => {
                 </div>
             </div>
         </div>
+        </ParseProvider>
     );
 };
 
