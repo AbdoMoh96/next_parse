@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Divider, Input } from 'antd';
 import Parse from 'parse';
+import { useRouter } from 'next/navigation';
 import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
 
 interface propTypes {}
@@ -10,6 +11,7 @@ const SignUpPage: React.FC<propTypes> = () => {
     // State variables
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const doUserRegistration = async function (): Promise<boolean> {
         // Note that these values come from state variables that we've declared before
@@ -17,12 +19,9 @@ const SignUpPage: React.FC<propTypes> = () => {
         const passwordValue: string = password;
         try {
             const createdUser = await Parse.User.signUp(usernameValue, passwordValue, {});
-            alert(
-                `Success! User ${createdUser.getUsername()} was successfully created!`,
-            );
+            router.push('/login');
             return true;
         } catch (error: any) {
-            alert(`Error! ${error}`);
             return false;
         };
     };
@@ -62,6 +61,20 @@ const SignUpPage: React.FC<propTypes> = () => {
                         size="large"
                     >
                         Sign Up
+                    </Button>
+
+                    <Button
+                        onClick={() => router.push('/login')}
+                        type="primary"
+                        className="form_button"
+                        color={'#208AEC'}
+                        style={{
+                            marginTop: "1rem",
+                            width: "100%"
+                        }}
+                        size="large"
+                    >
+                        Login
                     </Button>
                 </div>
             </div>

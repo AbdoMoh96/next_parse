@@ -8,7 +8,6 @@ import swal from 'sweetalert';
 interface propTypes {}
 
 const CreateTodoPage: React.FC<propTypes> = () => {
-
     const [title, setTitle] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -44,7 +43,10 @@ const CreateTodoPage: React.FC<propTypes> = () => {
                         <label htmlFor="title">Create Todo Item</label>
                         <Input style={{margin: "1rem 0 1rem 0"}} type="text" className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
                     </div>
-                    <Button loading={isLoading} type="primary" className="btn btn-primary" onClick={createTodo}>Create</Button>
+                    <Button loading={isLoading} type="primary" onClick={createTodo}>Create</Button>
+                    <Button style={{marginTop: "1rem"}} onClick={() => window.open('/todos/view', '_blank')} type="primary">
+                        View Live Todos
+                    </Button>
                 </div>
 
             </div>

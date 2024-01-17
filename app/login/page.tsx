@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Divider, Input } from 'antd';
 import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
+import { useRouter } from 'next/navigation';
 import Parse from 'parse';
 
 interface propTypes {}
@@ -10,33 +11,16 @@ const LoginPage: React.FC<propTypes> = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [currentUser, setCurrentUser] = useState< Parse.User<Parse.Attributes> | undefined>(undefined);
-
-
-    const getCurrentUser = async function () {
-        const currentUser = await Parse.User.current();
-        setCurrentUser(currentUser);
-        return currentUser;
-    };
+    const router = useRouter();
 
     const doUserLogIn = async function () {
         const usernameValue = username;
         const passwordValue = password;
         try {
             const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
-            alert(
-                `Success! User ${loggedInUser.get(
-                    'username'
-                )} has successfully signed in!`
-            );
-            const currentUser = await Parse.User.current();
-            console.log(loggedInUser === currentUser);
-            setUsername('');
-            setPassword('');
-            getCurrentUser();
-            return true;
+            router.push('/todos/create');
         } catch (error) {
-            alert(`Error! ${error}`);
-            return false;
+            console.log(error);
         }
     };
 
@@ -76,6 +60,20 @@ const LoginPage: React.FC<propTypes> = () => {
                         size="large"
                     >
                         Login
+                    </Button>
+
+                    <Button
+                        onClick={() => router.push('/signup')}
+                        type="primary"
+                        style={{
+                            marginTop: "1rem",
+                            width: "100%"
+                        }}
+                        className="form_button"
+                        color={'#208AEC'}
+                        size="large"
+                    >
+                        Register
                     </Button>
                 </div>
             </div>
