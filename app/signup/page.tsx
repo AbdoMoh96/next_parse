@@ -26,8 +26,9 @@ const SignUpPage: React.FC<propTypes> = () => {
         };
     };
 
+    ParseProvider({});
+
     return (
-        <ParseProvider>
         <div className="container">
             <div className='form_container'>
                 <h2 className="heading">{'User Registration'}</h2>
@@ -79,7 +80,6 @@ const SignUpPage: React.FC<propTypes> = () => {
                 </div>
             </div>
         </div>
-        </ParseProvider>
     );
 };
 

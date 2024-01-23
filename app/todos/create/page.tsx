@@ -4,12 +4,15 @@ import Parse from 'parse';
 import {Input, Button} from "antd";
 import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
 import swal from 'sweetalert';
+import LogoutButton from "@/Components/LogoutButton/LogoutButton";
 
 interface propTypes {}
 
 const CreateTodoPage: React.FC<propTypes> = () => {
     const [title, setTitle] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    ParseProvider({});
 
     const createTodo = () => {
         setIsLoading(true);
@@ -34,9 +37,9 @@ const CreateTodoPage: React.FC<propTypes> = () => {
 
     }
 
-
     return (
-        <ParseProvider>
+        <>
+            <LogoutButton/>
             <div className="container">
                 <div className="form_container">
                     <div className="form-group">
@@ -50,7 +53,7 @@ const CreateTodoPage: React.FC<propTypes> = () => {
                 </div>
 
             </div>
-        </ParseProvider>
+        </>
     );
 }
 

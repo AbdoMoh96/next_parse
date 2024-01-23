@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button, Divider, Input } from 'antd';
 import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
 import { useRouter } from 'next/navigation';
+import {signIn} from "next-auth/react";
 import Parse from 'parse';
 
 interface propTypes {}
@@ -13,21 +14,24 @@ const LoginPage: React.FC<propTypes> = () => {
     const [currentUser, setCurrentUser] = useState< Parse.User<Parse.Attributes> | undefined>(undefined);
     const router = useRouter();
 
+    ParseProvider({});
+
     const doUserLogIn = async function () {
         const usernameValue = username;
         const passwordValue = password;
         try {
             const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
-            router.push('/todos/create');
+          await signIn("credentials", {
+               parseUserToken : loggedInUser.getSessionToken(),
+               redirect: false,
+           }).then(() => router.push('/todos/create'));
         } catch (error) {
             console.log(error);
         }
     };
 
     return (
-        <ParseProvider>
         <div className="container">
-
             <div className='form_container'>
                 <h2 className="heading">{'User Login'}</h2>
                 <Divider />
@@ -78,7 +82,6 @@ const LoginPage: React.FC<propTypes> = () => {
                 </div>
             </div>
         </div>
-        </ParseProvider>
     );
 };
 
