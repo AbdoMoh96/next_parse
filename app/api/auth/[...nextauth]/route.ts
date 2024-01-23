@@ -1,24 +1,6 @@
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from 'next-auth'
+import { options } from './options'
 
+const handler = NextAuth(options)
 
-export const options: NextAuthOptions = {
-    providers: [
-        CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-                parseUserObject: {}
-            },
-            async authorize(parseUserObject: any) {
-                if(parseUserObject){
-                    return parseUserObject
-                }else{
-                    return null;
-                }
-            },
-        }),
-    ],
-    pages: {
-        signIn: "/auth/login",
-    },
-};
+export { handler as GET, handler as POST }

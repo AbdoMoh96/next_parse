@@ -4,10 +4,13 @@ import { Button } from "antd";
 import Parse from 'parse';
 import { useParseQuery } from  '@parse/react';
 import ParseProvider from "@/Providers/ParseProvider/ParseProvider";
+import LogoutButton from "@/Components/LogoutButton/LogoutButton";
 
 interface propTypes {}
 
 const TodosView: React.FC<propTypes> = () => {
+
+    ParseProvider({live: true});
 
     const parseQuery = new Parse.Query('ToDo');
     const {
@@ -21,7 +24,8 @@ const TodosView: React.FC<propTypes> = () => {
     } = useParseQuery(parseQuery);
 
     return (
-        <ParseProvider live={true}>
+        <>
+        <LogoutButton/>
         <div className="container">
         <div className="form_container">
             {isLoading && (
@@ -55,7 +59,7 @@ const TodosView: React.FC<propTypes> = () => {
             </Button>
         </div>
         </div>
-        </ParseProvider>
+        </>
     );
 }
 
