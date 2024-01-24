@@ -24,7 +24,7 @@ const LoginPage: React.FC<propTypes> = () => {
           await signIn("credentials", {
                parseUserToken : loggedInUser.getSessionToken(),
                redirect: false,
-           }).then(() => router.push('/todos/create'));
+           }).then(() => router.push('/orders/request'));
         } catch (error) {
             console.log(error);
         }
