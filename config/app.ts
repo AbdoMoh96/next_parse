@@ -1,5 +1,5 @@
 const parseConfig  = {
-    nextAuthSecret : process.env.NEXTAUTH_SECRET ?? '',
+    nextAuthSecret : process.env.NEXTAUTH_SECRET,
 };
 
 export default parseConfig;
